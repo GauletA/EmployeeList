@@ -1,10 +1,10 @@
-import { ContainerCards } from "../ContainerCards";
+import { LayoutListCards } from "../LayoutListCards";
 import NavigationLayout from "../NavigationLayout";
 
 const App = () => {
   return (
     <NavigationLayout>    
-      <ContainerCards />
+      <LayoutListCards />
     </NavigationLayout>
   );
 }
