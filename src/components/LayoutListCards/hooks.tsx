@@ -1,5 +1,6 @@
+import { EmotionJSX } from "@emotion/react/types/jsx-namespace";
 import axios from "axios";
-import { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 
 export const useUsersApi = () => {
     const [users, setUsers] = useState([])
@@ -7,19 +8,26 @@ export const useUsersApi = () => {
     const [nat, setNat] = useState("")
     // "nat=us&"
 
-    const handleNewPage = (page: number) => {
-        if (page !== page)
-            setPage(page)
-    }
-    const handleOtherNat = (nat: string) => {
-        if (nat !== nat)
-            setNat(nat)
-    }
+    console.log(page)
+    // const useCallback(
+    //   () => {
+    //     first
+    //   },
+    //   [second],
+    // )
+     const handleNewPage = useCallback((pg: number) => {
+                setPage(pg)
+        
+     },[]) 
+
+    const handleOtherNat = useCallback((nt: string) => {
+                setNat(nt)
+    },[]) 
 
     useEffect(() => {
         async function fetchData() {
-            const request: {results: []} = await axios.get(`https://randomuser.me/api/?${nat}page=${page}&results=1&seed=abc`);
-            setUsers(request.results)
+            const request: {data: any} = await axios.get(`https://randomuser.me/api/?${nat}page=${page}&results=4&seed=abc`);
+            setUsers(request.data.results)
         }
         fetchData()
     }, [page, nat])
