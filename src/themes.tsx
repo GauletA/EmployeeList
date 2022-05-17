@@ -7,6 +7,7 @@ declare module '@mui/material/styles' {
       danger: string;
     };
   }
+
   // allow configuration using `createTheme`
   interface ThemeOptions {
     status?: {
@@ -20,11 +21,3 @@ export const theme = createTheme({
     danger: "100px",
   },
 });
-
-// export default function CustomStyles() {
-//   return (
-//     <ThemeProvider theme={theme}>
-     
-//     </ThemeProvider>
-//   );
-// }
