@@ -1,3 +1,4 @@
+import { useTheme } from "@emotion/react"
 import { EmotionJSX } from "@emotion/react/types/jsx-namespace"
 import styled from "@emotion/styled"
 import { FormControl, Grid, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent } from "@mui/material"
@@ -12,12 +13,13 @@ const ContainerB = styled(Grid)`
     margin-bottom: 15px;
 `
 
-const CardG = styled(Grid)`
-    border-radius: 10px;
-    width: 90%;
-    margin-bottom: 15px;
-    box-shadow: 2px 1px 5px #9b9c9a;
-`
+const CardG = styled(Grid)<any>(({sti, theme}) => ({
+    borderRadius: sti ? sti :'50px;',
+    width: '90%',
+    marginBottom: theme?.status?.danger,
+    boxShadow: '2px 1px 5px #9b9c9a',
+}))
+   
 
 const PictureBox = styled(Grid)`
     border-top-left-radius: 10px;
@@ -42,7 +44,7 @@ const TypoBreakLine = styled.p`
 const Card = ({picture, first, phone, email}: {picture: {large: string}, first: string, phone: string, email: string}) => {
     return (
         <Grid container item direction="column" alignItems="center" xs={6} sm={4} md={3}>
-            <CardG container direction="column" item wrap="nowrap" >
+            <CardG container direction="column" item wrap="nowrap" sti="10px" >
                     <PictureBox item>
                         <Picture
                             src={picture.large}
@@ -72,6 +74,9 @@ const ContainerCards = ({users}: {users: any}) => {
 
 const Filter = ({handleOtherNat}: {handleOtherNat: Function}) => {
     const [nats, setNats] = useState('');
+    const theme = useTheme()
+
+    console.log(theme)
 
     const handleChange = (event: SelectChangeEvent) => {
         handleOtherNat(event.target.value)
