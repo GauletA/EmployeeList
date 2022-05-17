@@ -3,7 +3,7 @@ import { EmotionJSX } from "@emotion/react/types/jsx-namespace"
 import styled from "@emotion/styled"
 import { FormControl, Grid, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent } from "@mui/material"
 import { Box } from "@mui/system"
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { useUsersApi } from "./hooks"
 
 // import { unstable_createMuiStrictModeTheme } from '@mui/material/styles';
@@ -12,13 +12,31 @@ import { useUsersApi } from "./hooks"
 const ContainerB = styled(Grid)`
     margin-bottom: 15px;
 `
+type Props = {
+    children: any
+    props?: any
+}
 
-const CardG = styled(Grid)<any>(({sti, theme}) => ({
+const GridCd: React.FC<Props> = ( {children, ...props}) => {
+    return ( <Grid {...props}> {children} </Grid> )
+}
+
+const CardG = styled(GridCd)<any>(({sti, theme}) => ({
     borderRadius: sti ? sti :'50px;',
     width: '90%',
     marginBottom: theme?.status?.danger,
     boxShadow: '2px 1px 5px #9b9c9a',
 }))
+
+const GridContain: React.FC<Props> = ({children}: {children: any}) => {
+    return (
+        <Grid container item direction="column" alignItems="center" xs={6} sm={4} md={3}>
+            <CardG container direction="column" item wrap="nowrap" sti="10px" >
+                {children}
+            </CardG>
+        </Grid>
+    )
+}
    
 
 const PictureBox = styled(Grid)`
@@ -32,6 +50,7 @@ const Picture = styled.img`
     width: 100%; 
 `
 
+
 const TypoBox = styled(Grid)`
     padding-left: 10px 
 `
@@ -43,20 +62,18 @@ const TypoBreakLine = styled.p`
 
 const Card = ({picture, first, phone, email}: {picture: {large: string}, first: string, phone: string, email: string}) => {
     return (
-        <Grid container item direction="column" alignItems="center" xs={6} sm={4} md={3}>
-            <CardG container direction="column" item wrap="nowrap" sti="10px" >
-                    <PictureBox item>
-                        <Picture
-                            src={picture.large}
-                            alt="Grapefruit slice atop a pile of other slices" />
-                    </PictureBox>
-                    <TypoBox item >
-                        <TypoBreakLine>Name: {first} </TypoBreakLine>
-                        <TypoBreakLine>Phone: {phone}</TypoBreakLine>
-                        <TypoBreakLine>Gmail: {email}</TypoBreakLine>
-                    </TypoBox>
-            </CardG>
-        </Grid>
+        <GridContain>
+            <PictureBox item>
+                <Picture
+                    src={picture.large}
+                    alt="Grapefruit slice atop a pile of other slices" />
+            </PictureBox>
+            <TypoBox>
+                <TypoBreakLine>Name: {first} </TypoBreakLine>
+                <TypoBreakLine>Phone: {phone}</TypoBreakLine>
+                <TypoBreakLine>Gmail: {email}</TypoBreakLine>
+            </TypoBox>
+        </GridContain>
     )
 }
 
