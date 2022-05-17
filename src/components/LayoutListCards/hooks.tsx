@@ -8,13 +8,6 @@ export const useUsersApi = () => {
     const [nat, setNat] = useState("")
     // "nat=us&"
 
-    console.log(page)
-    // const useCallback(
-    //   () => {
-    //     first
-    //   },
-    //   [second],
-    // )
      const handleNewPage = useCallback((pg: number) => {
                 setPage(pg)
         

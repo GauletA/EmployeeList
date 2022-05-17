@@ -2,7 +2,6 @@ import { useTheme } from "@emotion/react"
 import { EmotionJSX } from "@emotion/react/types/jsx-namespace"
 import styled from "@emotion/styled"
 import { FormControl, Grid, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent } from "@mui/material"
-import { Box } from "@mui/system"
 import React, { useMemo, useState } from "react"
 import { useUsersApi } from "./hooks"
 
@@ -93,8 +92,6 @@ const Filter = ({handleOtherNat}: {handleOtherNat: Function}) => {
     const [nats, setNats] = useState('');
     const theme = useTheme()
 
-    console.log(theme)
-
     const handleChange = (event: SelectChangeEvent) => {
         handleOtherNat(event.target.value)
         setNats(event.target.value as string);
@@ -118,12 +115,9 @@ const Filter = ({handleOtherNat}: {handleOtherNat: Function}) => {
     )
 }
 
-const PaginationContainer = ({handleNewPage}: {handleNewPage: Function}) => {
-    
-    return (
-        <Pagination count={10} variant="outlined"  onChange={(event, value) => {handleNewPage(value)}} />
+const PaginationContainer = ({handleNewPage}: {handleNewPage: Function}) => (
+        <Pagination count={10} variant="outlined"  onChange={(_, value) => {handleNewPage(value)}} />
     )
-}
 
 const FilterGrid = styled(Grid)`
     width: 15%;
@@ -138,7 +132,6 @@ const PaginationGrid = styled(Grid)`
 export const LayoutListCards = () => {
     const {users, handleNewPage, handleOtherNat} = useUsersApi()
 
-    console.log(users)
     return useMemo<EmotionJSX.Element>(function () {
         return (
             <Grid container item direction="column" alignItems="center" xs={12} sm={10} md={10}>
