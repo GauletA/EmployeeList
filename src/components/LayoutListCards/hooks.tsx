@@ -7,7 +7,8 @@ export const useUsersApi = () => {
     const [nat, setNat] = useState("")
 
      const handleNewPage = useCallback((pg: number) => {
-                setPage(pg)
+        setUsers([])
+        setPage(pg)
      },[]) 
 
     const handleOtherNat = useCallback((nt: string) => {

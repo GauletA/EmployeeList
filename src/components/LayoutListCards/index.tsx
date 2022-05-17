@@ -111,9 +111,12 @@ const Filter = ({handleOtherNat}: {handleOtherNat: Function}) => {
         </FormControl>
     )
 }
+const PaginationStyled = styled(Pagination)`
+    
+`
 
 const PaginationContainer = ({handleNewPage}: {handleNewPage: Function}) => (
-        <Pagination count={10} variant="outlined"  onChange={(_, value) => {handleNewPage(value)}} />
+        <PaginationStyled count={10} variant="outlined"  onChange={(_, value) => {handleNewPage(value)}} />
     )
 
 const FilterGrid = styled(Grid)`
