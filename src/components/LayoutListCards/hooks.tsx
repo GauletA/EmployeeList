@@ -1,4 +1,3 @@
-import { EmotionJSX } from "@emotion/react/types/jsx-namespace";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react"
 
@@ -6,11 +5,9 @@ export const useUsersApi = () => {
     const [users, setUsers] = useState([])
     const [page, setPage] = useState(1)
     const [nat, setNat] = useState("")
-    // "nat=us&"
 
      const handleNewPage = useCallback((pg: number) => {
                 setPage(pg)
-        
      },[]) 
 
     const handleOtherNat = useCallback((nt: string) => {

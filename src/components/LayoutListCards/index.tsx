@@ -1,55 +1,28 @@
-import { useTheme } from "@emotion/react"
+
 import { EmotionJSX } from "@emotion/react/types/jsx-namespace"
 import styled from "@emotion/styled"
 import { FormControl, Grid, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent } from "@mui/material"
-import React, { useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useUsersApi } from "./hooks"
-
-// import { unstable_createMuiStrictModeTheme } from '@mui/material/styles';
-// const theme = unstable_createMuiStrictModeTheme();
+import { css } from '@emotion/css'
 
 const ContainerB = styled(Grid)`
     margin-bottom: 15px;
 `
-type Props = {
-    children: any
-    props?: any
-}
-
-const GridCd: React.FC<Props> = ( {children, ...props}) => {
-    return ( <Grid {...props}> {children} </Grid> )
-}
-
-const CardG = styled(GridCd)<any>(({sti, theme}) => ({
-    borderRadius: sti ? sti :'50px;',
+const CardG = styled(Grid)({
+    borderRadius: '10px;',
     width: '90%',
-    marginBottom: theme?.status?.danger,
     boxShadow: '2px 1px 5px #9b9c9a',
-}))
-
-const GridContain: React.FC<Props> = ({children}: {children: any}) => {
-    return (
-        <Grid container item direction="column" alignItems="center" xs={6} sm={4} md={3}>
-            <CardG container direction="column" item wrap="nowrap" sti="10px" >
-                {children}
-            </CardG>
-        </Grid>
-    )
-}
-   
-
+})
 const PictureBox = styled(Grid)`
     border-top-left-radius: 10px;
     border-top-right-radius: 10px; 
 `
-
 const Picture = styled.img`
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     width: 100%; 
 `
-
-
 const TypoBox = styled(Grid)`
     padding-left: 10px 
 `
@@ -61,23 +34,24 @@ const TypoBreakLine = styled.p`
 
 const Card = ({picture, first, phone, email}: {picture: {large: string}, first: string, phone: string, email: string}) => {
     return (
-        <GridContain>
-            <PictureBox item>
-                <Picture
-                    src={picture.large}
-                    alt="Grapefruit slice atop a pile of other slices" />
-            </PictureBox>
-            <TypoBox>
-                <TypoBreakLine>Name: {first} </TypoBreakLine>
-                <TypoBreakLine>Phone: {phone}</TypoBreakLine>
-                <TypoBreakLine>Gmail: {email}</TypoBreakLine>
-            </TypoBox>
-        </GridContain>
+        <Grid className={css({marginBottom: '15px'})} container item direction="column" alignItems="center" xs={6} sm={4} md={3}>
+            <CardG container direction="column" item wrap="nowrap" >
+                <PictureBox item>
+                    <Picture
+                        src={picture.large}
+                        alt="Grapefruit slice atop a pile of other slices" />
+                </PictureBox>
+                <TypoBox>
+                    <TypoBreakLine>Name: {first} </TypoBreakLine>
+                    <TypoBreakLine>Phone: {phone}</TypoBreakLine>
+                    <TypoBreakLine>Gmail: {email}</TypoBreakLine>
+                </TypoBox>
+            </CardG>
+        </Grid>
     )
 }
 
 const ContainerCards = ({users}: {users: any}) => {
-   
     return (
         <ContainerB container item>
             {users.map(({picture, name, phone, email}: {picture: {large: string}, name: {first: string}, phone: string, email: string}) => {
@@ -90,7 +64,6 @@ const ContainerCards = ({users}: {users: any}) => {
 
 const Filter = ({handleOtherNat}: {handleOtherNat: Function}) => {
     const [nats, setNats] = useState('');
-    const theme = useTheme()
 
     const handleChange = (event: SelectChangeEvent) => {
         handleOtherNat(event.target.value)
@@ -110,6 +83,9 @@ const Filter = ({handleOtherNat}: {handleOtherNat: Function}) => {
                 <MenuItem value={""}>All</MenuItem>
                 <MenuItem value={"nat=fr&"}>French</MenuItem>
                 <MenuItem value={"nat=us&"}>English</MenuItem>
+                <MenuItem value={"nat=au&"}>Australia</MenuItem>
+                <MenuItem value={"nat=fi&"}>Finland</MenuItem>
+                <MenuItem value={"nat=nz&"}>New Zealand</MenuItem>
             </Select>
         </FormControl>
     )
