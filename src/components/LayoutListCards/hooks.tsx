@@ -11,7 +11,8 @@ export const useUsersApi = () => {
      },[]) 
 
     const handleOtherNat = useCallback((nt: string) => {
-                setNat(nt)
+        setUsers([])
+        setNat(nt)
     },[]) 
 
     useEffect(() => {
