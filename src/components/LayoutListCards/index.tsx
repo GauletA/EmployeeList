@@ -1,10 +1,9 @@
 
 import { EmotionJSX } from "@emotion/react/types/jsx-namespace"
 import styled from "@emotion/styled"
-import { FormControl, Grid, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent } from "@mui/material"
+import { FormControl, Grid, Grow, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent, Tooltip } from "@mui/material"
 import { useMemo, useState } from "react"
 import { useUsersApi } from "./hooks"
-import { css } from '@emotion/css'
 
 const ContainerB = styled(Grid)`
     margin-bottom: 15px;
@@ -24,39 +23,61 @@ const Picture = styled.img`
     width: 100%; 
 `
 const TypoBox = styled(Grid)`
-    padding-left: 10px 
+    padding-left: 10px;
+    padding-right: 10px;
 `
 const TypoBreakLine = styled.p`
-    overflow-wrap: break-word;
     text-decoration-line: underline;
     text-decoration-color: #ccccca;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`
+const CardContainer = styled(Grid)`
+    transform: scale(1);
+    transition: all .22s ease-in-out; 
+        &:hover {
+            transform: scale(1.05);
+        }
 `
 
-const Card = ({picture, first, phone, email}: {picture: {large: string}, first: string, phone: string, email: string}) => {
+const Card = ({ind, picture, first, phone, email}: {ind: number, picture: {large: string}, first: string, phone: string, email: string}) => {
+
+    console.log(ind)
     return (
-        <Grid className={css({marginBottom: '15px'})} container item direction="column" alignItems="center" xs={6} sm={4} md={3}>
-            <CardG container direction="column" item wrap="nowrap" >
-                <PictureBox item>
-                    <Picture
-                        src={picture.large}
-                        alt="Grapefruit slice atop a pile of other slices" />
-                </PictureBox>
-                <TypoBox>
-                    <TypoBreakLine>Name: {first} </TypoBreakLine>
-                    <TypoBreakLine>Phone: {phone}</TypoBreakLine>
-                    <TypoBreakLine>Gmail: {email}</TypoBreakLine>
-                </TypoBox>
-            </CardG>
-        </Grid>
+        <Grow
+          in={true}
+          style={{ transformOrigin: "0 0 0" }}
+          {...(true ? { timeout: 500 * ind } : {})}
+        >
+            <CardContainer sx={{marginBottom: '15px'}} container item direction="column" alignItems="center" xs={6} sm={4} md={3}>
+                <CardG container direction="column" item wrap="nowrap" >
+                    <PictureBox item>
+                        <Picture
+                            src={picture.large}
+                            alt="Grapefruit slice atop a pile of other slices" />
+                    </PictureBox>
+                    <TypoBox>
+                        <TypoBreakLine>Name: {first} </TypoBreakLine>
+                        <Tooltip title="Copy phone">
+                            <TypoBreakLine onClick={() => {navigator.clipboard.writeText(phone)}}>Phone: {phone}</TypoBreakLine>
+                        </Tooltip>
+                        <Tooltip title="Copy email">
+                            <TypoBreakLine onClick={() => {navigator.clipboard.writeText(email)}}>Gmail: {email}</TypoBreakLine>
+                        </Tooltip>
+                    </TypoBox>
+                </CardG>
+            </CardContainer>
+        </Grow>
     )
 }
 
 const ContainerCards = ({users}: {users: any}) => {
     return (
         <ContainerB container item>
-            {users.map(({picture, name, phone, email}: {picture: {large: string}, name: {first: string}, phone: string, email: string}) => {
+            {users.map(({picture, name, phone, email}: {picture: {large: string}, name: {first: string}, phone: string, email: string}, ind: number) => {
                 let { first } = name
-                return (<Card picture={picture} first={first} phone={phone} email={email}/>)
+                return (<Card picture={picture} first={first} phone={phone} email={email} key={ind} ind={ind}/>)
             })}
         </ContainerB>
     )

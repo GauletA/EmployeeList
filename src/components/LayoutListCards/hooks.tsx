@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 export const useUsersApi = () => {
     const [users, setUsers] = useState([])
@@ -16,7 +16,7 @@ export const useUsersApi = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const request: {data: any} = await axios.get(`https://randomuser.me/api/?${nat}page=${page}&results=4&seed=abc`);
+            const request: {data: any} = await axios.get(`https://randomuser.me/api/?${nat}page=${page}&results=12&seed=abc`);
             setUsers(request.data.results)
         }
         fetchData()
