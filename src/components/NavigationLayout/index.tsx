@@ -8,14 +8,14 @@ const bounce = keyframes`
   background-position: 0% 0%;
 }
 50% { 
-  background-position: -200px 0%;
+  background-position: -150px 0%;
 }
 100% {
   background-position: 0% 0%;
 }
 `
 const Layout = styled(Grid)`
-  background-image: url("al.jpg");
+  background-image: url("ligth_theme.jpg");
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;

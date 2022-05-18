@@ -2,27 +2,20 @@
 import { EmotionJSX } from "@emotion/react/types/jsx-namespace"
 import styled from "@emotion/styled"
 import { FormControl, Grid, Grow, InputLabel, MenuItem, Pagination, Paper, Select, SelectChangeEvent, Tooltip } from "@mui/material"
-import React, { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useUsersApi } from "./hooks"
 
 const ContainerB = styled(Grid)`
     margin-bottom: 15px;
 `
-const CardG = styled(Grid)({
-    borderRadius: '10px;',
-    width: '90%',
-    boxShadow: '2px 1px 5px #9b9c9a',
-})
-const PictureBox = styled(Grid)`
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px; 
-`
+
 const Picture = styled.img`
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-radius: 25% 10%;
     width: 100%; 
 `
-const TypoBox = styled(Grid)`
+const TypoLayout = styled(Grid)`
+    background-color: rgba(255, 255, 255, 0.793);
+    border-radius: 15% 15%;
     padding-left: 10px;
     padding-right: 10px;
 `
@@ -34,14 +27,8 @@ const TypoBreakLine = styled.p`
     overflow: hidden;
     font-weight: 1000;
 `
-const GridZoom = styled(Grid)`
-    transform: scale(1);
-    transition: all .22s ease-in-out; 
-        &:hover {
-            transform: scale(1.05);
-        }
-`
-const WrapAnim = ({data}: {data?: any,}) => {
+
+const WrapAnim = ({users}: {users?: any,}) => {
     const [active, setActive]: [any, Function] = useState([])
 
     const func = (el: any, ind: number) => {
@@ -51,22 +38,48 @@ const WrapAnim = ({data}: {data?: any,}) => {
     }
     useEffect(() => {
         setActive([])
-        data.forEach((nu: any, ind: number) => {
+        users.forEach((nu: any, ind: number) => {
             setTimeout(() => {
               setActive((el: any) => func(el, ind))
             }, ind * 240);
           })
-    },[data])
+    },[users])
     
     return (
         <Grid container item>
-            {data.map(({picture, name, phone, email}: {picture: {large: string}, name: {first: string}, phone: string, email: string}, ind: number) => {
+            {users.map(({picture, name, phone, email}: {picture: {large: string}, name: {first: string}, phone: string, email: string}, ind: number) => {
                 let { first } = name
                 return (<Card picture={picture} first={first} phone={phone} email={email} key={ind} ind={ind} active={active[ind]}/>)
             })}
         </Grid>
     )
 }
+
+const GridZoom = styled(Grid)`
+    transform: scale(1);
+    transition: all .22s ease-in-out; 
+        &:hover {
+            transform: scale(1.05);
+        }
+`
+
+const PictureCard = ({src}: {src: string}) => (
+    <Grid item >
+        <Picture src={src} alt="Picture user" />
+    </Grid>
+)
+
+const TypoCard = ({first, phone, email}: {first: string, phone: string, email: string}) => (
+    <TypoLayout>
+        <TypoBreakLine>Name: {first} </TypoBreakLine>
+        <Tooltip title="Copy phone">
+            <TypoBreakLine onClick={() => {navigator.clipboard.writeText(phone)}}>Phone: {phone}</TypoBreakLine>
+        </Tooltip>
+        <Tooltip title="Copy email">
+            <TypoBreakLine onClick={() => {navigator.clipboard.writeText(email)}}>Gmail: {email}</TypoBreakLine>
+        </Tooltip>
+    </TypoLayout>
+)
 
 const Card = ({ind, picture, first, phone, email, active}: {ind: number, picture: {large: string}, first: string, phone: string, email: string, active: number}) => {
 
@@ -79,22 +92,10 @@ const Card = ({ind, picture, first, phone, email, active}: {ind: number, picture
             {...(act ? { timeout: 800 } : {})}
             >
                 <Grid sx={{marginBottom: '25px', }} container item alignItems="center" justifyContent={'center'}>
-                    <CardG container direction="column" item wrap="nowrap" >
-                        <PictureBox item>
-                            <Picture
-                                src={picture.large}
-                                alt="Grapefruit slice atop a pile of other slices" />
-                        </PictureBox>
-                        <TypoBox sx={{backgroundColor: 'rgba(255, 255, 255, 0.793)', borderRadius: "10px"}}>
-                            <TypoBreakLine>Name: {first} </TypoBreakLine>
-                            <Tooltip title="Copy phone">
-                                <TypoBreakLine onClick={() => {navigator.clipboard.writeText(phone)}}>Phone: {phone}</TypoBreakLine>
-                            </Tooltip>
-                            <Tooltip title="Copy email">
-                                <TypoBreakLine onClick={() => {navigator.clipboard.writeText(email)}}>Gmail: {email}</TypoBreakLine>
-                            </Tooltip>
-                        </TypoBox>
-                    </CardG>
+                    <Grid container direction="column" item wrap="nowrap" sx={{width: '90%'}} >
+                        <PictureCard src={picture.large} />
+                        <TypoCard first={first} phone={phone} email={email} />
+                    </Grid>
                 </Grid>
             </Grow>
         </GridZoom>
@@ -104,7 +105,7 @@ const Card = ({ind, picture, first, phone, email, active}: {ind: number, picture
 const ContainerCards = ({users}: {users: any}) => {
     return (
         <ContainerB container item>
-           <WrapAnim data={users} />
+           <WrapAnim users={users} />
         </ContainerB>
     )
 }
@@ -144,26 +145,20 @@ const Filter = ({handleOtherNat}: {handleOtherNat: Function}) => {
     )
 }
 
-const PaperBk = styled(Paper)`
-    background-image: url(https://media.istockphoto.com/photos/turquoise-aqua-color-abstract-background-picture-id1060834578);
-    background-position: bottom;
-    background-repeat: no-repeat;
-    background-size: cover;
-    
-    filter: blur(0px) opacity(0.7);
-    height: 40px;
-    position: absolute;
-    top: -7px;
-    left: -10px;
-    width: 100%;
-    border-radius: 50px;
+const PagContainer = styled.div`
+    opacity: 0.4;
+
+    &:hover {
+        opacity: 1;
+    }
 `
 
 const PaginationContainer = ({handleNewPage}: {handleNewPage: Function}) => (
-    <div style={{position: 'absolute', bottom: '7%'}}>
-        <PaperBk sx={{padding: "7px 10px", backgroundColor: 'rgba(255, 255, 255, 0.253)', backdropFilter: 'blur(5px)',}}></PaperBk>
-        <Pagination count={10} variant="outlined" size='large' onChange={(_, value) => {handleNewPage(value)}} />
-    </div>
+    <PagContainer style={{position: 'absolute', bottom: '7%'}}>
+        <Paper sx={{padding: "6px", borderRadius: "15px"}} >
+            <Pagination count={10} variant="outlined" onChange={(_, value) => {handleNewPage(value)}} />
+        </Paper>
+    </PagContainer>
         )
 
 const FilterGrid = styled(Grid)`
