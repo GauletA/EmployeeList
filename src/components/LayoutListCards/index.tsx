@@ -11,10 +11,10 @@ const ContainerB = styled(Grid)`
 
 const Picture = styled.img`
     border-radius: 25% 10%;
-    width: 100%; 
+    width: 100%;
 `
 const TypoLayout = styled(Grid)`
-    background-color: rgba(255, 255, 255, 0.793);
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 15% 15%;
     padding-left: 10px;
     padding-right: 10px;

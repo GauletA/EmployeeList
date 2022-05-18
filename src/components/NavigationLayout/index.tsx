@@ -15,7 +15,7 @@ const bounce = keyframes`
 }
 `
 const Layout = styled(Grid)`
-  background-image: url("ligth_theme.jpg");
+  background-image: url("al.jpg");
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
